@@ -10,7 +10,7 @@
     tools:context=".MainActivity">
 <LinearLayout
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:orientation="vertical"
     android:layout_margin="10dp"
     android:paddingHorizontal="10dp">
@@ -22,21 +22,33 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         style="@style/Page_Header"
+        android:textAlignment="center"
         android:text="@string/attendance_tracking_system"/>
-    <com.google.android.material.button.MaterialButton
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/register_face"
-        app:cornerRadius="8dp"
-        style="@style/button_text"
-        android:paddingHorizontal="8dp"/>
-    <com.google.android.material.button.MaterialButton
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:cornerRadius="8dp"
-        android:paddingHorizontal="8dp"
-        android:text="@string/take_attendance"/>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="@string/register_face"
+            style="@style/button_text"
+            android:backgroundTint="@color/primary_color"
+            android:layout_marginBottom="10dp"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            style="@style/button_text"
+            android:backgroundTint="@color/primary_color"
+            android:text="@string/take_attendance"
+            android:layout_marginTop="10dp"
+            app:cornerRadius="20dp"
+            />
+
+    </LinearLayout>
 </LinearLayout>
 
 </RelativeLayout>
