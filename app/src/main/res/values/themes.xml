@@ -1,9 +1,27 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.FaceIt" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Base.Theme.FaceIt" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="android:statusBarColor">@color/primary_color</item>
+        <item name="android:windowBackground">@color/secondary_color</item>
     </style>
 
-    <style name="Theme.FaceIt" parent="Base.Theme.FaceIt" />
+    <style name="Theme.FaceIt" parent="Base.Theme.FaceIt" >
+        <item name="fontFamily">@font/inter_variable</item>
+        <item name="android:statusBarColor">@color/primary_color</item>
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+
+    <!--light mode styles -->
+        <style name="Page_Header">
+            <item name="android:textSize">24sp</item>
+            <item name="android:textColor">@color/primary_color</item>
+            <item name="android:textStyle">bold</item>
+            <item name="textAllCaps">true</item>
+        </style>
+        <style name="button_text">
+            <item name="android:textStyle">normal</item>
+            <item name="android:textSize">16sp</item>
+        </style>
 </resources>

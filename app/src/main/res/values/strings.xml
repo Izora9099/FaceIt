@@ -3,6 +3,8 @@
     <string name="next">Next</string>
     <string name="finish">finish</string>
     <string name="register_face">Register Face</string>
+    <string name="attendance_tracking_system">attendance tracking system</string>
+    <string name="take_attendance">take attendance</string>
 
 
 </resources>
