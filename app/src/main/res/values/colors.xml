@@ -3,4 +3,9 @@
     <color name="primary_color">#243852</color>
     <color name="secondary_color">#fcfcfc</color>
 
+
+        <color name="black">#FF000000</color>
+        <color name="white">#FFFFFFFF</color>
+        <color name="dark_blue_button">#28354A</color>
+
 </resources>

@@ -5,6 +5,9 @@
     <string name="register_face">Register Face</string>
     <string name="attendance_tracking_system">attendance tracking system</string>
     <string name="take_attendance">take attendance</string>
+    <string name="register_new_face">register new face</string>
+    <string name="enter_your_name">Enter your name</string>
+    <string name="enter_your_matriculation_number">Enter your matriculation number</string>
 
 
 </resources>

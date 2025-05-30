@@ -13,6 +13,12 @@
         android:theme="@style/Theme.FaceIt"
         tools:targetApi="31">
         <activity
+            android:name=".ScanFace"
+            android:exported="false" />
+        <activity
+            android:name=".RegisterStudent1"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
