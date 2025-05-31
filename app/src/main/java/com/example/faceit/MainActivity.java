@@ -8,6 +8,8 @@ import com.google.android.material.button.MaterialButton;
 
 public class MainActivity extends AppCompatActivity {
 
+
+
     MaterialButton registerFaceButton, takeAttendanceButton;
 
     @Override
