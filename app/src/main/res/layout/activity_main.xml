@@ -14,10 +14,23 @@
     android:orientation="vertical"
     android:layout_margin="10dp"
     android:paddingHorizontal="10dp">
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src=""/>
+   <LinearLayout
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:layout_gravity="center"
+       android:orientation="vertical">
+       <ImageView
+       android:layout_width="159dp"
+       android:layout_height="159dp"
+       android:src="@drawable/logo"/>
+       <TextView
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:text="@string/app_name"
+           android:textAlignment="center"
+           style="@style/logo"/>
+   </LinearLayout>
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -34,6 +47,7 @@
         <com.google.android.material.button.MaterialButton
             android:layout_width="match_parent"
             android:layout_height="60dp"
+            android:id="@+id/register_face_button"
             android:text="@string/register_face"
             style="@style/button_text"
             android:backgroundTint="@color/primary_color"
@@ -43,6 +57,7 @@
         <com.google.android.material.button.MaterialButton
             android:layout_width="match_parent"
             android:layout_height="60dp"
+            android:id="@+id/take_attendance_button"
             style="@style/button_text"
             android:backgroundTint="@color/primary_color"
             android:text="@string/take_attendance"

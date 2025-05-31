@@ -1,24 +1,29 @@
 package com.example.faceit;
 
+import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.activity.EdgeToEdge;
+import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+import com.google.android.material.button.MaterialButton;
 
 public class MainActivity extends AppCompatActivity {
+
+    MaterialButton registerFaceButton, takeAttendanceButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_main);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
+        setContentView(R.layout.activity_main); // Make sure this matches your layout file name
+
+        registerFaceButton = findViewById(R.id.register_face_button); // Add an id to this button in XML
+        takeAttendanceButton = findViewById(R.id.take_attendance_button); // Add an id to this button in XML
+
+        registerFaceButton.setOnClickListener(v -> {
+            startActivity(new Intent(MainActivity.this, RegisterStudent1.class));
+        });
+
+        takeAttendanceButton.setOnClickListener(v -> {
+            startActivity(new Intent(MainActivity.this, ScanFace.class));
         });
     }
 }

@@ -16,6 +16,10 @@ appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "a
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
+camerax-core = "androidx.camera:camera-core:1.2.3"
+camerax-camera2 = "androidx.camera:camera-camera2:1.2.3"
+camerax-lifecycle = "androidx.camera:camera-lifecycle:1.2.3"
+camerax-view = "androidx.camera:camera-view:1.2.3"
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
