@@ -2,10 +2,15 @@
 <resources>
     <color name="primary_color">#243852</color>
     <color name="secondary_color">#fcfcfc</color>
-
-
+    <color name="primary_color_variant">#4D243852</color>
         <color name="black">#FF000000</color>
         <color name="white">#FFFFFFFF</color>
         <color name="dark_blue_button">#28354A</color>
 
-</resources>
+
+
+     <color name="text_input_outline_color">#CCCCCC</color> <color name="text_input_hint_color">#808080</color>
+
+
+
+    </resources>

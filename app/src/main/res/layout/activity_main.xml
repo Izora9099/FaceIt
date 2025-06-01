@@ -22,21 +22,24 @@
        <ImageView
        android:layout_width="159dp"
        android:layout_height="159dp"
-       android:src="@drawable/logo"/>
+       android:src="@drawable/logo"
+           android:contentDescription="@string/app_logo"
+           android:layout_gravity="center"/>
        <TextView
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
            android:text="@string/app_name"
            android:textAlignment="center"
            style="@style/logo"/>
+       <TextView
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           style="@style/Page_Header"
+           android:textAlignment="center"
+           android:text="@string/attendance_tracking_system"/>
    </LinearLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style="@style/Page_Header"
-        android:textAlignment="center"
-        android:text="@string/attendance_tracking_system"/>
+
 
     <LinearLayout
         android:layout_width="match_parent"
