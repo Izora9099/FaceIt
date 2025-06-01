@@ -165,7 +165,7 @@ public class ScanFace extends AppCompatActivity {
         String name = prefs.getString("student_name", "Unknown");
         String matric = prefs.getString("student_matric", "N/A");
 
-        ApiService api = ApiClient.getClient("http://YOUR_PC_IP:8000/").create(ApiService.class);
+        ApiService api = ApiClient.getClient("http://192.168.1.111:8000/").create(ApiService.class);
 
         RequestBody nameBody = RequestBody.create(MediaType.parse("text/plain"), name);
         RequestBody matricBody = RequestBody.create(MediaType.parse("text/plain"), matric);

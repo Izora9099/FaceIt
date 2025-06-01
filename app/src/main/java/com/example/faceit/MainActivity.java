@@ -15,10 +15,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main); // Make sure this matches your layout file name
+        setContentView(R.layout.activity_main);
 
-        registerFaceButton = findViewById(R.id.register_face_button); // Add an id to this button in XML
-        takeAttendanceButton = findViewById(R.id.take_attendance_button); // Add an id to this button in XML
+        registerFaceButton = findViewById(R.id.register_face_button);
+        takeAttendanceButton = findViewById(R.id.take_attendance_button);
 
         registerFaceButton.setOnClickListener(v -> {
             startActivity(new Intent(MainActivity.this, RegisterStudent1.class));
