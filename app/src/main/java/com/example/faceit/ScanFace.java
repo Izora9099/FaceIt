@@ -4,32 +4,54 @@ import android.Manifest;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.camera.core.Camera;
 import androidx.camera.core.CameraSelector;
+import androidx.camera.core.ImageCapture;
+import androidx.camera.core.ImageCaptureException;
 import androidx.camera.core.Preview;
 import androidx.camera.lifecycle.ProcessCameraProvider;
 import androidx.camera.view.PreviewView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.LifecycleOwner;
+
 import com.google.common.util.concurrent.ListenableFuture;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ScanFace extends AppCompatActivity {
 
     private static final int PERMISSION_REQUEST_CODE = 1001;
     private PreviewView previewView;
     private Button finishButton;
+    private ImageCapture imageCapture;
+    private ExecutorService cameraExecutor;
 
     private final String[] basePermissions = new String[]{
             Manifest.permission.CAMERA,
@@ -53,20 +75,11 @@ public class ScanFace extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scan_face);
 
-        SharedPreferences prefs = getSharedPreferences("faceit_prefs", Context.MODE_PRIVATE);
-        String name = prefs.getString("student_name", "Unknown");
-        String matric = prefs.getString("student_matric", "N/A");
-
         previewView = findViewById(R.id.previewView);
         finishButton = findViewById(R.id.finishButton);
+        cameraExecutor = Executors.newSingleThreadExecutor();
 
         requestAllPermissions();
-
-        finishButton.setOnClickListener(v -> {
-            // TODO: Add logic to handle scan result submission here
-            Toast.makeText(ScanFace.this, "Scan finished.", Toast.LENGTH_SHORT).show();
-            finish();
-        });
     }
 
     private void requestAllPermissions() {
@@ -104,20 +117,77 @@ public class ScanFace extends AppCompatActivity {
                 ProcessCameraProvider cameraProvider = cameraProviderFuture.get();
 
                 Preview preview = new Preview.Builder().build();
+                imageCapture = new ImageCapture.Builder().build();
+
                 CameraSelector cameraSelector = CameraSelector.DEFAULT_FRONT_CAMERA;
 
                 preview.setSurfaceProvider(previewView.getSurfaceProvider());
 
                 cameraProvider.unbindAll();
-                Camera camera = cameraProvider.bindToLifecycle(
+                cameraProvider.bindToLifecycle(
                         (LifecycleOwner) this,
                         cameraSelector,
-                        preview);
+                        preview,
+                        imageCapture);
+
+                // Automatically take picture once camera is ready
+                captureAndSend();
 
             } catch (ExecutionException | InterruptedException e) {
                 Log.e("CameraX", "Error starting camera", e);
             }
         }, ContextCompat.getMainExecutor(this));
+    }
+
+    private void captureAndSend() {
+        File photoFile = new File(getCacheDir(), "captured_face.jpg");
+
+        ImageCapture.OutputFileOptions outputOptions =
+                new ImageCapture.OutputFileOptions.Builder(photoFile).build();
+
+        imageCapture.takePicture(outputOptions, ContextCompat.getMainExecutor(this),
+                new ImageCapture.OnImageSavedCallback() {
+                    @Override
+                    public void onImageSaved(@NonNull ImageCapture.OutputFileResults outputFileResults) {
+                        uploadToBackend(photoFile);
+                    }
+
+                    @Override
+                    public void onError(@NonNull ImageCaptureException exception) {
+                        Toast.makeText(ScanFace.this, "Capture failed: " + exception.getMessage(), Toast.LENGTH_LONG).show();
+                        Log.e("CaptureError", "Failed to capture image", exception);
+                    }
+                });
+    }
+
+    private void uploadToBackend(File imageFile) {
+        SharedPreferences prefs = getSharedPreferences("faceit_prefs", Context.MODE_PRIVATE);
+        String name = prefs.getString("student_name", "Unknown");
+        String matric = prefs.getString("student_matric", "N/A");
+
+        ApiService api = ApiClient.getClient("http://YOUR_PC_IP:8000/").create(ApiService.class);
+
+        RequestBody nameBody = RequestBody.create(MediaType.parse("text/plain"), name);
+        RequestBody matricBody = RequestBody.create(MediaType.parse("text/plain"), matric);
+        RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), imageFile);
+        MultipartBody.Part body = MultipartBody.Part.createFormData("image", imageFile.getName(), reqFile);
+
+        Call<ApiResponse> call = api.registerStudent(nameBody, matricBody, body);
+        call.enqueue(new Callback<ApiResponse>() {
+            @Override
+            public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    Toast.makeText(ScanFace.this, response.body().message, Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(ScanFace.this, "Registration failed", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ApiResponse> call, Throwable t) {
+                Toast.makeText(ScanFace.this, "Network error: " + t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     @Override
@@ -139,6 +209,14 @@ public class ScanFace extends AppCompatActivity {
                 Toast.makeText(this, "All permissions are required to continue.", Toast.LENGTH_LONG).show();
                 finish();
             }
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (cameraExecutor != null) {
+            cameraExecutor.shutdown();
         }
     }
 }

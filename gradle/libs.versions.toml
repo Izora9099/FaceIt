@@ -7,6 +7,8 @@ appcompat = "1.7.0"
 material = "1.12.0"
 activity = "1.10.1"
 constraintlayout = "2.2.1"
+retrofit = "2.9.0"
+okhttp = "4.9.3"
 
 [libraries]
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -20,7 +22,9 @@ camerax-core = "androidx.camera:camera-core:1.2.3"
 camerax-camera2 = "androidx.camera:camera-camera2:1.2.3"
 camerax-lifecycle = "androidx.camera:camera-lifecycle:1.2.3"
 camerax-view = "androidx.camera:camera-view:1.2.3"
-
+retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
+retrofit-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
+okhttp-logging = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "okhttp" }
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 
