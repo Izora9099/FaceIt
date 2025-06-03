@@ -14,6 +14,7 @@ public interface ApiService {
             @Part MultipartBody.Part image
     );
 
+
     @Multipart
     @POST("api/attendance/")
     Call<ApiResponse> takeAttendance(

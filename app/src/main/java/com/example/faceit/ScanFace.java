@@ -4,19 +4,15 @@ import android.Manifest;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.camera.core.Camera;
 import androidx.camera.core.CameraSelector;
 import androidx.camera.core.ImageCapture;
 import androidx.camera.core.ImageCaptureException;
@@ -30,13 +26,9 @@ import androidx.lifecycle.LifecycleOwner;
 import com.google.common.util.concurrent.ListenableFuture;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -51,7 +43,7 @@ public class ScanFace extends AppCompatActivity {
     private PreviewView previewView;
     private Button finishButton;
     private ImageCapture imageCapture;
-    private ExecutorService cameraExecutor;
+    private boolean imageCaptured = false;
 
     private final String[] basePermissions = new String[]{
             Manifest.permission.CAMERA,
@@ -65,9 +57,7 @@ public class ScanFace extends AppCompatActivity {
     };
 
     private final String[] mediaPermissions13Plus = new String[]{
-            Manifest.permission.READ_MEDIA_IMAGES,
-            Manifest.permission.READ_MEDIA_VIDEO,
-            Manifest.permission.READ_MEDIA_VISUAL_USER_SELECTED
+            Manifest.permission.READ_MEDIA_IMAGES
     };
 
     @Override
@@ -77,32 +67,30 @@ public class ScanFace extends AppCompatActivity {
 
         previewView = findViewById(R.id.previewView);
         finishButton = findViewById(R.id.finishButton);
-        cameraExecutor = Executors.newSingleThreadExecutor();
 
         requestAllPermissions();
     }
 
     private void requestAllPermissions() {
-        List<String> allPermissions = new ArrayList<>();
-        for (String perm : basePermissions) allPermissions.add(perm);
+        List<String> permissionsToRequest = new ArrayList<>();
+
+        permissionsToRequest.add(Manifest.permission.CAMERA);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            for (String perm : mediaPermissions13Plus) allPermissions.add(perm);
+            permissionsToRequest.add(Manifest.permission.READ_MEDIA_IMAGES);
         } else {
-            for (String perm : storagePermissionsBelow13) allPermissions.add(perm);
+            permissionsToRequest.add(Manifest.permission.READ_EXTERNAL_STORAGE);
         }
 
-        List<String> toRequest = new ArrayList<>();
-        for (String perm : allPermissions) {
+        List<String> missing = new ArrayList<>();
+        for (String perm : permissionsToRequest) {
             if (ContextCompat.checkSelfPermission(this, perm) != PackageManager.PERMISSION_GRANTED) {
-                toRequest.add(perm);
+                missing.add(perm);
             }
         }
 
-        if (!toRequest.isEmpty()) {
-            ActivityCompat.requestPermissions(this,
-                    toRequest.toArray(new String[0]),
-                    PERMISSION_REQUEST_CODE);
+        if (!missing.isEmpty()) {
+            ActivityCompat.requestPermissions(this, missing.toArray(new String[0]), PERMISSION_REQUEST_CODE);
         } else {
             startCamera();
         }
@@ -130,8 +118,7 @@ public class ScanFace extends AppCompatActivity {
                         preview,
                         imageCapture);
 
-                // Automatically take picture once camera is ready
-                captureAndSend();
+                if (!imageCaptured) captureAndSend();
 
             } catch (ExecutionException | InterruptedException e) {
                 Log.e("CameraX", "Error starting camera", e);
@@ -140,8 +127,11 @@ public class ScanFace extends AppCompatActivity {
     }
 
     private void captureAndSend() {
-        File photoFile = new File(getCacheDir(), "captured_face.jpg");
+        if (imageCaptured) return;
 
+        imageCaptured = true;
+
+        File photoFile = new File(getCacheDir(), "captured_face.jpg");
         ImageCapture.OutputFileOptions outputOptions =
                 new ImageCapture.OutputFileOptions.Builder(photoFile).build();
 
@@ -156,6 +146,7 @@ public class ScanFace extends AppCompatActivity {
                     public void onError(@NonNull ImageCaptureException exception) {
                         Toast.makeText(ScanFace.this, "Capture failed: " + exception.getMessage(), Toast.LENGTH_LONG).show();
                         Log.e("CaptureError", "Failed to capture image", exception);
+                        imageCaptured = false; // Allow retry if needed
                     }
                 });
     }
@@ -195,28 +186,25 @@ public class ScanFace extends AppCompatActivity {
                                            @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
         if (requestCode == PERMISSION_REQUEST_CODE) {
             boolean allGranted = true;
-            for (int result : grantResults) {
-                if (result != PackageManager.PERMISSION_GRANTED) {
+
+            for (int i = 0; i < grantResults.length; i++) {
+                if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
                     allGranted = false;
-                    break;
+                    Log.d("PermissionCheck", "Permission denied: " + permissions[i]);
+                } else {
+                    Log.d("PermissionCheck", "Permission granted: " + permissions[i]);
                 }
             }
+
             if (allGranted) {
                 startCamera();
             } else {
                 Toast.makeText(this, "All permissions are required to continue.", Toast.LENGTH_LONG).show();
                 finish();
             }
-        }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (cameraExecutor != null) {
-            cameraExecutor.shutdown();
         }
     }
 }

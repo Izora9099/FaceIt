@@ -31,12 +31,12 @@
 
     </FrameLayout>
 
-    <androidx.appcompat.widget.AppCompatButton
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/finishButton"
         android:layout_width="250dp"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:text="@string/finish"
-       style="@style/button_text"
+        style="@style/button_text"
         android:layout_marginTop="32dp"
         android:backgroundTint="#1D314F"
         android:padding="12dp"
