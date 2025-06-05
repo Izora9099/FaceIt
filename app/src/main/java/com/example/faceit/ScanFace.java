@@ -4,7 +4,6 @@ import android.Manifest;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -43,7 +42,7 @@ public class ScanFace extends AppCompatActivity {
     private PreviewView previewView;
     private Button finishButton;
     private ImageCapture imageCapture;
-    private boolean imageCaptured = false;
+    private boolean isCameraReady = false;
 
     private final String[] basePermissions = new String[]{
             Manifest.permission.CAMERA,
@@ -67,6 +66,14 @@ public class ScanFace extends AppCompatActivity {
 
         previewView = findViewById(R.id.previewView);
         finishButton = findViewById(R.id.finishButton);
+
+        finishButton.setOnClickListener(v -> {
+            if (isCameraReady) {
+                captureAndSend();
+            } else {
+                Toast.makeText(ScanFace.this, "Camera not ready yet. Please wait...", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         requestAllPermissions();
     }
@@ -118,7 +125,7 @@ public class ScanFace extends AppCompatActivity {
                         preview,
                         imageCapture);
 
-                if (!imageCaptured) captureAndSend();
+                isCameraReady = true;
 
             } catch (ExecutionException | InterruptedException e) {
                 Log.e("CameraX", "Error starting camera", e);
@@ -127,10 +134,6 @@ public class ScanFace extends AppCompatActivity {
     }
 
     private void captureAndSend() {
-        if (imageCaptured) return;
-
-        imageCaptured = true;
-
         File photoFile = new File(getCacheDir(), "captured_face.jpg");
         ImageCapture.OutputFileOptions outputOptions =
                 new ImageCapture.OutputFileOptions.Builder(photoFile).build();
@@ -139,6 +142,7 @@ public class ScanFace extends AppCompatActivity {
                 new ImageCapture.OnImageSavedCallback() {
                     @Override
                     public void onImageSaved(@NonNull ImageCapture.OutputFileResults outputFileResults) {
+                        Toast.makeText(ScanFace.this, "Image captured. Sending to server...", Toast.LENGTH_SHORT).show();
                         uploadToBackend(photoFile);
                     }
 
@@ -146,7 +150,6 @@ public class ScanFace extends AppCompatActivity {
                     public void onError(@NonNull ImageCaptureException exception) {
                         Toast.makeText(ScanFace.this, "Capture failed: " + exception.getMessage(), Toast.LENGTH_LONG).show();
                         Log.e("CaptureError", "Failed to capture image", exception);
-                        imageCaptured = false; // Allow retry if needed
                     }
                 });
     }
@@ -160,7 +163,7 @@ public class ScanFace extends AppCompatActivity {
 
         RequestBody nameBody = RequestBody.create(MediaType.parse("text/plain"), name);
         RequestBody matricBody = RequestBody.create(MediaType.parse("text/plain"), matric);
-        RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), imageFile);
+        RequestBody reqFile = RequestBody.create(MediaType.parse("image/jpeg"), imageFile);
         MultipartBody.Part body = MultipartBody.Part.createFormData("image", imageFile.getName(), reqFile);
 
         Call<ApiResponse> call = api.registerStudent(nameBody, matricBody, body);
@@ -170,7 +173,7 @@ public class ScanFace extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null) {
                     Toast.makeText(ScanFace.this, response.body().message, Toast.LENGTH_LONG).show();
                 } else {
-                    Toast.makeText(ScanFace.this, "Registration failed", Toast.LENGTH_LONG).show();
+                    Toast.makeText(ScanFace.this, "Registration failed: No face found or invalid image.", Toast.LENGTH_LONG).show();
                 }
             }
 
