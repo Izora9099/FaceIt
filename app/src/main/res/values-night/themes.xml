@@ -3,5 +3,8 @@
     <style name="Base.Theme.FaceIt" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your dark theme here. -->
         <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+        <!--
+        I need to make it such that it will always be the lightmode showing and not dark mode. The setting for that is to be inserted here I think, if it doesn't work then I will just make the theme for night be the same as the theme for day
+        -->
     </style>
 </resources>

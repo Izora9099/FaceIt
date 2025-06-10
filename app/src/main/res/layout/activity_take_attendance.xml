@@ -8,7 +8,7 @@
     android:orientation="vertical"
     android:gravity="center_horizontal"
     android:background="@color/secondary_color"
-    tools:context=".ScanFace">
+    tools:context=".TakeAttendance">
 
     <TextView
         android:layout_width="wrap_content"
@@ -16,7 +16,7 @@
         android:text="@string/scan_face"
         style="@style/Page_Header"
         android:layout_marginTop="32dp"
-         />
+        />
 
     <FrameLayout
         android:id="@+id/camera_preview_container"
@@ -38,9 +38,9 @@
         android:layout_height="60dp"
         android:text="@string/finish"
         style="@style/button_text"
+        app:cornerRadius="12dp"
         android:layout_marginTop="32dp"
         android:backgroundTint="@color/primary_color"
-        app:cornerRadius="12dp"
         android:padding="12dp"
         />
 </LinearLayout>

@@ -9,6 +9,7 @@
     <string name="enter_your_name">Enter your name</string>
     <string name="enter_your_matriculation_number">Enter your matriculation number</string>
     <string name="app_logo">app logo</string>
+    <string name="scan_face">SCAN FACE</string>
 
 
 </resources>

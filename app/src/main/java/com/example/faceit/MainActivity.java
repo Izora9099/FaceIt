@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         takeAttendanceButton.setOnClickListener(v -> {
-            startActivity(new Intent(MainActivity.this, ScanFace.class));
+            startActivity(new Intent(MainActivity.this, TakeAttendance.class));
         });
     }
 }
