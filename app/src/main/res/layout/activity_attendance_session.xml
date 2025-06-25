@@ -8,7 +8,7 @@
     android:orientation="vertical"
     android:gravity="center_horizontal"
     android:background="@color/secondary_color"
-    tools:context=".TakeAttendance">
+    tools:context=".AttendanceSessionActivity">
 
     <TextView
         android:layout_width="wrap_content"
