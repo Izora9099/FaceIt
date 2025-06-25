@@ -1,10 +1,36 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.FaceIt" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
-        <!--
-        I need to make it such that it will always be the lightmode showing and not dark mode. The setting for that is to be inserted here I think, if it doesn't work then I will just make the theme for night be the same as the theme for day
-        -->
+    <style name="Base.Theme.FaceIt" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="android:statusBarColor">@color/primary_color</item>
+        <item name="android:windowBackground">@color/secondary_color</item>
+
+    </style>
+
+    <style name="Theme.FaceIt" parent="Base.Theme.FaceIt" >
+        <item name="fontFamily">@font/inter_variable</item>
+        <item name="android:statusBarColor">@color/primary_color</item>
+        <item name="android:windowLightStatusBar">true</item>
+
+    </style>
+
+    <!--light mode styles -->
+    <style name="Page_Header">
+        <item name="android:textSize">24sp</item>
+        <item name="android:textColor">@color/primary_color</item>
+        <item name="android:textStyle">bold</item>
+        <item name="textAllCaps">true</item>
+    </style>
+    <style name="button_text">
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/secondary_color</item>
+    </style>
+    <style name="logo">
+        <item name="android:textSize">32sp</item>
+        <item name="textAllCaps">true</item>
+        <item name="android:textColor">@color/primary_color</item>
+        <item name="android:textStyle">bold</item>
     </style>
 </resources>

@@ -1,6 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <network-security-config>
+    <!--
+    ⚠️ DEVELOPMENT ONLY - Allow HTTP traffic to your Django server
+
+    IMPORTANT: This configuration allows cleartext (HTTP) traffic which is
+    needed for local Django development. In production, you should use HTTPS.
+
+    When you change WiFi networks and IP addresses:
+    1. Update the domain below with your new IP address
+    2. Keep the same format: just the IP without http:// or port
+    -->
+
     <domain-config cleartextTrafficPermitted="true">
-        <domain includeSubdomains="false">192.168.1.111</domain>
+        <!-- 🌐 UPDATE THIS IP WHEN CHANGING NETWORKS -->
+        <domain includeSubdomains="false">172.30.62.139</domain>
+
+        <!-- Common network ranges - uncomment as needed when switching networks -->
+        <!-- <domain includeSubdomains="false">192.168.1.100</domain> -->   <!-- Home WiFi range -->
+        <!-- <domain includeSubdomains="false">192.168.0.100</domain> -->   <!-- Home WiFi range -->
+        <!-- <domain includeSubdomains="false">10.0.0.100</domain> -->      <!-- Corporate WiFi range -->
+        <!-- <domain includeSubdomains="false">10.0.2.2</domain> -->        <!-- Android Emulator -->
+        <!-- <domain includeSubdomains="false">192.168.43.100</domain> -->  <!-- Phone hotspot range -->
+
+        <!-- Localhost for testing -->
+        <domain includeSubdomains="false">127.0.0.1</domain>
+        <domain includeSubdomains="false">localhost</domain>
     </domain-config>
+
+    <!--
+    Alternative: Allow all cleartext traffic (less secure but simpler)
+    Uncomment the line below if you want to allow HTTP to any domain
+    -->
+    <!-- <base-config cleartextTrafficPermitted="true" /> -->
 </network-security-config>

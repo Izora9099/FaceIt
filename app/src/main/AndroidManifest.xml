@@ -23,9 +23,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.FaceIt"
+        android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".TakeAttendance"
+            android:name=".TeacherDashboardActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AttendanceSessionActivity"
             android:exported="false" />
         <activity
             android:name=".ScanFace"
