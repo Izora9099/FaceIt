@@ -9,13 +9,47 @@ public interface ApiService {
 
     // Teacher Authentication - Using Django's existing JWT endpoint
     @FormUrlEncoded
-    @POST("auth/login/")  // ⬅️ FIXED: Use existing Django endpoint
+    @POST("auth/login/")
     Call<TeacherAuthResponse> authenticateTeacher(
             @Field("username") String username,
             @Field("password") String password
     );
 
-    // Session Management
+    // ✅ REAL COURSE SELECTION - Using existing Django CourseViewSet
+    @GET("courses/")
+    Call<CoursesListResponse> getTeacherCourses(
+            @Header("Authorization") String authorization,
+            @Query("active_only") boolean activeOnly
+    );
+
+    // ✅ Dashboard stats from existing Django endpoint
+    @GET("dashboard/stats/")
+    Call<DashboardStatsResponse> getDashboardStats(
+            @Header("Authorization") String authorization
+    );
+
+    // ✅ EXISTING FACE RECOGNITION - Updated to include course_id
+    @Multipart
+    @POST("recognize-face/")
+    Call<ApiResponse> takeAttendance(
+            @Part MultipartBody.Part image,
+            @Part("course_id") RequestBody courseId
+    );
+
+    // ✅ EXISTING STUDENT REGISTRATION
+    @Multipart
+    @POST("register-student/")
+    Call<ApiResponse> registerStudent(
+            @Part("name") RequestBody name,
+            @Part("matric_number") RequestBody matricNumber,
+            @Part MultipartBody.Part image
+    );
+
+    // ===================================================================
+    // 🚧 FUTURE SESSION-BASED ENDPOINTS (when you add them to Django)
+    // ===================================================================
+
+    // Session Management (TODO: Add these to Django later)
     @FormUrlEncoded
     @POST("sessions/start/")
     Call<SessionResponse> startAttendanceSession(
@@ -29,13 +63,7 @@ public interface ApiService {
             @Field("session_id") String sessionId
     );
 
-    // Context-aware course selection
-    @GET("teachers/{teacher_id}/current-courses/")
-    Call<CurrentCoursesResponse> getCurrentScheduledCourses(
-            @Path("teacher_id") String teacherId
-    );
-
-    // Session-based attendance
+    // Session-based attendance (TODO: Add to Django later)
     @Multipart
     @POST("attendance/checkin/")
     Call<AttendanceResponse> recordAttendance(
@@ -44,34 +72,9 @@ public interface ApiService {
             @Part MultipartBody.Part faceImage
     );
 
-    // Real-time session stats
+    // Real-time session stats (TODO: Add to Django later)
     @GET("sessions/{session_id}/stats/")
     Call<SessionStatsResponse> getSessionStats(
             @Path("session_id") String sessionId
     );
-
-    // Legacy endpoints (keep for backward compatibility)
-    @Multipart
-    @POST("api/register/")
-    Call<ApiResponse> registerStudent(
-            @Part("name") RequestBody name,
-            @Part("matric_number") RequestBody matricNumber,
-            @Part MultipartBody.Part image
-    );
-
-    @Multipart
-    @POST("api/attendance/")
-    Call<ApiResponse> takeAttendance(
-            @Part MultipartBody.Part image
-    );
-
-    @FormUrlEncoded
-    @POST("api/post/")
-    Call<ApiResponse> postStudentInfo(
-            @Field("name") String name,
-            @Field("matric_number") String matricNumber
-    );
-
-    @GET("api/notify/")
-    Call<ApiResponse> getNotification(@Query("message") String message);
 }

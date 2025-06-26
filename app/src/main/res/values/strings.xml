@@ -17,6 +17,7 @@
     <string name="login">Login</string>
     <string name="enter_username">Enter Username</string>
     <string name="password">Enter Password</string>
+    <string name="position_your_face_in_the_camera_and_tap_capture">👤 Position your face in the camera and tap \'Capture\'</string>
 
 
 </resources>
