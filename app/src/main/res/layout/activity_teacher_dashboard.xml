@@ -18,18 +18,17 @@
             android:id="@+id/teacher_name_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Welcome, Teacher"
-            android:textSize="24sp"
-            android:textStyle="bold"
+            android:text="@string/welcome_teacher"
+            style="@style/Page_Header"
             android:layout_marginBottom="8dp"/>
 
         <TextView
             android:id="@+id/current_time_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="2:30 PM"
+            android:text="@string/_2_30_pm"
             android:textSize="18sp"
-            android:textColor="@android:color/darker_gray"/>
+            android:textColor="@color/primary_color"/>
     </LinearLayout>
 
     <!-- Action Buttons -->
@@ -52,8 +51,8 @@
             android:id="@+id/logout_button"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:text="Logout"
-            android:textSize="16sp"
+            android:text="@string/logout"
+            style="@style/button_text"
             android:backgroundTint="@android:color/darker_gray"/>
     </LinearLayout>
 
@@ -61,10 +60,9 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Tap 'Start Attendance Session' to begin taking attendance for your current class."
-        android:textSize="14sp"
+        android:text="@string/tap_start_attendance_session_to_begin_taking_attendance_for_your_current_class"
+        style="@style/hint"
         android:textAlignment="center"
-        android:textColor="@android:color/darker_gray"
         android:layout_marginTop="24dp"/>
 
 </LinearLayout>

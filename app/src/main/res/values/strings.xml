@@ -10,6 +10,13 @@
     <string name="enter_your_matriculation_number">Enter your matriculation number</string>
     <string name="app_logo">app logo</string>
     <string name="scan_face">SCAN FACE</string>
+    <string name="welcome_teacher">Welcome, Teacher</string>
+    <string name="tap_start_attendance_session_to_begin_taking_attendance_for_your_current_class">Tap \'Start Attendance Session\' to begin taking attendance for your current class.</string>
+    <string name="logout">Logout</string>
+    <string name="_2_30_pm">2:30 PM</string>
+    <string name="login">Login</string>
+    <string name="enter_username">Enter Username</string>
+    <string name="password">Enter Password</string>
 
 
 </resources>

@@ -21,15 +21,14 @@
             android:text="John Doe"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:textColor="@android:color/black"/>
+            android:textColor="@color/primary_color"/>
 
         <TextView
             android:id="@+id/matric_number_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="2019/CS/001"
-            android:textSize="12sp"
-            android:textColor="@android:color/darker_gray"/>
+            style="@style/small_text"/>
 
     </LinearLayout>
 
