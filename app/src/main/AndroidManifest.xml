@@ -29,7 +29,7 @@
             android:name=".BasicAttendanceActivity"
             android:exported="false" />
         <activity
-            android:name=".CourseSelectionActvity"
+            android:name=".CourseSelectionActivity"
             android:exported="false" />
         <activity
             android:name=".TeacherDashboardActivity"

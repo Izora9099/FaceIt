@@ -31,6 +31,33 @@
             android:textColor="@color/primary_color"/>
     </LinearLayout>
 
+    <!-- Stats Card -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/rounded_border"
+        android:padding="16dp"
+        android:layout_marginBottom="24dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="📊 Dashboard Stats"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp"/>
+
+        <TextView
+            android:id="@+id/stats_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Loading stats..."
+            android:textSize="14sp"
+            android:lineSpacingExtra="4dp"/>
+    </LinearLayout>
+
+
     <!-- Action Buttons -->
     <LinearLayout
         android:layout_width="match_parent"
